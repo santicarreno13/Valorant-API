@@ -1,24 +1,35 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useEffect, useState } from 'react';
+import Navbar from './components/Navbar'
+import Weapons from './components/Weapons'
+
 
 function App() {
+
+  const [weapons, setWeapons] = useState([]);
+
+  const WeaponsUrl = "https://valorant-api.com/v1/weapons/skins"
+
+  const fetchWeapons = (url) => {
+    fetch(url)
+    .then(response => response.json())
+    .then(data => setWeapons(data.data))
+    .catch(error => console.log(error))
+  }
+
+  useEffect(() => {
+    fetchWeapons(WeaponsUrl);
+  }, [])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+    <Navbar brand="Weapons Valorant" />
+    <Weapons weapons={weapons}/>
+    <style>{`
+      body {
+        background-color: #212020;
+      }
+          `}</style>
+    </>
   );
 }
 
